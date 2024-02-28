@@ -1,17 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import List
 from core import Shoes
-from pprint import pprint
-from presenter import Presenter
-
-
-class DataBase:
-    def __init__(self):
-        self.db: List[Shoes] = []
-
-    def search_database(self):
-        return self.db
-
 
 class IModel(ABC):
     @abstractmethod
@@ -19,49 +8,57 @@ class IModel(ABC):
         pass
 
     @abstractmethod
-    def search_shoes(self):
+    def search_shoes(self, name):
         pass
 
     @abstractmethod
-    def refactor_shoes(self, shoes: Shoes) -> Shoes:
+    def refactor_shoes(self, name, shoes_ref: Shoes) -> Shoes:
         pass
 
     @abstractmethod
-    def delete_shoes(self, shoes: Shoes):
+    def delete_shoes(self, name):
         pass
+
 
 
 class Model(IModel):
     def __init__(self):
-        self.database = DataBase()
-
+        self.db=[]
     def add_shoes(self, shoes: Shoes):
-        self.database.db.append(shoes)
+        return self.db.append(shoes)
 
-    def search_shoes(self):
-        # if shoes in self.database.db:
-        #     return shoes
-        # return None
-        return self.database.db
-    def refactor_shoes(self, shoes: Shoes) :
-        pass
-#
-#
-    def delete_shoes(self, shoes: Shoes):
-        for i in range(len(self.database.db)-1):
-            if self.database.db[i] == shoes:
-                del self.database.db[i]
+    def search_shoes(self, name):
+        if not self.db:
+            return f'There are no such shoes'
+        for i in self.db:
+            shoes = i
+            for j in shoes:
+                if name == j:
+                    return shoes
+        return f'There are no such shoes'
+    def refactor_shoes(self, name, shoes_ref: Shoes) :
+        for i in self.db:
+            shoes=i
+            print(shoes)
+            for j in shoes:
+                print(j)
+                if name==j:
+                    self.db.append(shoes_ref)
+                    self.db.remove(i)
+                    return
+        return f'There are no such shoes'
+
+    def delete_shoes(self, name):
+        for i in self.db:
+            shoes = i
+            print(shoes)
+            for j in shoes:
+                if name == j:
+                    self.db.remove(i)
+                    return
+        return f'There are no such shoes'
 
 
 
 
-# model=Model()
-# shoes_1=Shoes('man', 'cross', 'blue', '15$', 'USA', '45')
-# shoes_2=Shoes('woman', 'sandals', 'red', '0,5$', 'USSR', '46')
-# model.add_shoes(shoes_1)
-# model.add_shoes(shoes_2)
-# # pprint(model.database.db)
-# # pprint(model.search_shoes(shoes_1))
-# print(model.delete_shoes(shoes_1))
-# print(model.database.db)
 
